@@ -1,10 +1,12 @@
 Package: disclosuR
 Type: Package
-Title: Text conversion from NexisUni PDFs to R data frames
+Title: Text Conversion from Nexis Uni PDFs to R Data Frames
 Version: 0.0.1.0
 Date: 2023-04-19
 Author: Jonas Roettger
 Maintainer: Jonas Roettger <jonas.roettger@gmx.net>
-Description: This package contains functions to transform newswire and earnings calls transcript from PDF to R data frames. Various newswires and FairDisclosure earnings calls format are supported (all otainable from NexisUni). 
-Imports: dplyr, lubridate, pdftools, Qdap, SentimentAnalysis, stringi, stringr, syuzhet, zoo
-RoxygenNote: 7.1.2
+Description: Functions to transform newswire and earnings call transcripts as PDFs obtained from Nexis Uni to R data frames. Various newswires and FairDisclosure earnings call formats are supported. 
+License: GPL-3
+Imports: dplyr, lubridate, pdftools, qdap, SentimentAnalysis, stringi, stringr, syuzhet, zoo, SnowballC, tm
+Encoding: UTF-8
+RoxygenNote: 7.2.3

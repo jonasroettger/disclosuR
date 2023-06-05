@@ -15,6 +15,10 @@ newswire_segmenter_folder(
 )
 }
 \arguments{
+\item{folder_path}{The path to the folder in which the newswire PDFs reside.
+If it does not contain an absolute path, the folder name is
+relative to the current working directory, getwd().}
+
 \item{sentiment}{Performs dictionary-based sentiment analysis
 based on the \code{\link[SentimentAnalysis]{analyzeSentiment}}
 function (default: FALSE)}
@@ -30,21 +34,17 @@ dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa
 \item{laughter}{Counts the number of times laughter was indicated in a quote. (default: FALSE)}
 
 \item{narcissism}{Counts the number of pronoun usage and calculates the ratio of first-person singular to
-first-person plural pronouns. This measure is derived from \href{https://journals.sagepub.com/doi/pdf/10.1177/0001839214554989?casa_token=SE3k4io6um0AAAAA:gpJvbVmEkbA1-b9J5lSRvRv53WrAvWBWgqSK74s8AMhu3MCq9hy1mUkXpS3MM3XHUf8ZpJTNbGWKnQ}{Zhu & Chen, (2015}
+first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 (default: FALSE)}
 
-\item{file}{The name of the PDF file which the data are to be read
-from. If it does not contain an absolute path, the file name is
-relative to the current working directory, getwd().}
-
-\item{title_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FALSE)}
+\item{text_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FALSE)}
 }
 \value{
 An R data frame with each row representing one newswire article. The columns indicate the title, text,
 newswire, date, and weekday. (default: FAKSE)
 
 An R data frame with each row representing one newswire article. The columns indicate the title, text,
-newswire, date, and weekday. Depending on the additional arguemnts, the output data can also
+newswire, date, and weekday. Depending on the additional arguments, the output data can also
 contain sentiment, emotion, regulatory focus, laughter, narcissism and text cluster based on the Graffin et al.
 categories.
 }
@@ -53,6 +53,8 @@ Takes all PDF documents in a folder containing news-wire documents obtained from
 an R data frame consisting of one row per document.
 }
 \examples{
-newswire_df <- newswire_segmenter(file = "press_release.pdf");
-newswire_df_sentiment <- newswire_segmenter(file = "press_release.pdf", sentiment = TRUE);
+\dontrun{
+newswire_df <- newswire_segmenter_folder(folder_path = "C:/newswire_collection");
+newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection", sentiment = TRUE);
+}
 }

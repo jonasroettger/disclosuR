@@ -14,16 +14,21 @@
 #' dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa_token=Zye71gMR5RoAAAAA:G76SwrZDfECXcyMeROZkhSgBsvGWyiULh-Fy7kAb1fpxS4DCxpZZbocUfTesOm90lAa5vl-lKOvYVI7ZKxNS9eP0MlVN9eRv31kMGhSPD6ldjzqrSyeF)}{Gamache et al., 2015}
 #' (default: FALSE)
 #' @param narcissism Counts the number of pronoun usage and calculates the ratio of first-person singular to
-#' first-person plural pronouns. This measure is derived from \href{https://journals.sagepub.com/doi/pdf/10.1177/0001839214554989?casa_token=SE3k4io6um0AAAAA:gpJvbVmEkbA1-b9J5lSRvRv53WrAvWBWgqSK74s8AMhu3MCq9hy1mUkXpS3MM3XHUf8ZpJTNbGWKnQ}{Zhu & Chen, (2015}
+#' first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 #' (default: FALSE)
 #' @param laughter Counts the number of times laughter was indicated in a quote. (default: FALSE)
 #' @return An R data frame with each row representing one quote. The columns indicate the quarter, year, section
 #' (presentation versus Q&A), the speaker's name, role, affiliation, and also three binary indicators on whether the
 #' speaker is the host company's (1) CEO, (2) CFO, and/or (3) Chairman.
 #' @examples
+#' \dontrun{
 #' earnings_call_df <- conference_call_segmenter(file = "earnings_call.pdf");
 #' earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf", sentiment = TRUE);
+#' }
 #' @export
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_squish
+#' @importFrom dplyr %>%
 #'
 conference_call_segmenter <- function(file,
                                       sentiment = FALSE,
@@ -35,7 +40,6 @@ conference_call_segmenter <- function(file,
   if(!file.exists(file)){
 
     print("File does not exist")
-    break
 
   }else{
 
@@ -423,7 +427,7 @@ conference_call_segmenter <- function(file,
                               collapse = "|")
 
     # get word count per quote
-    quotes_data_frame_one_call$word_count <- strinr::str_count(quotes_data_frame_one_call$quote, "\\w+")
+    quotes_data_frame_one_call$word_count <- stringr::str_count(quotes_data_frame_one_call$quote, "\\w+")
 
     # count frequency words regulatory focus
     quotes_data_frame_one_call$promotion_focus <- stringr::str_count(quotes_data_frame_one_call$quote_withoutName,
@@ -474,26 +478,27 @@ conference_call_segmenter <- function(file,
 #' in a folder to an R data frame.
 #' @param folder_path The name of the folder which the data are to be read
 #' from. If it does not contain an absolute path, the file name is
-#' relative to the current working directory, getwd().
+#' relative to the current working directory.
 #' @param sentiment Performs dictionary-based sentiment analysis
 #' based on the \code{\link[SentimentAnalysis]{analyzeSentiment}}
 #' function (default: FALSE)
 #' @param emotion Performs dictionary-based emotion analysis based on the
-#' \code{\link[syuzhet]{get_nrc_sentiment}} function (default: FALSE)
 #' @param regulatory_focus Calculates the number of words indicative for
 #' promotion and prevention focus based on the
 #' dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa_token=Zye71gMR5RoAAAAA:G76SwrZDfECXcyMeROZkhSgBsvGWyiULh-Fy7kAb1fpxS4DCxpZZbocUfTesOm90lAa5vl-lKOvYVI7ZKxNS9eP0MlVN9eRv31kMGhSPD6ldjzqrSyeF)}{Gamache et al., 2015}
 #' (default: FALSE)
 #' @param narcissism Counts the number of pronoun usage and calculates the ratio of first-person singular to
-#' first-person plural pronouns. This measure is derived from \href{https://journals.sagepub.com/doi/pdf/10.1177/0001839214554989?casa_token=SE3k4io6um0AAAAA:gpJvbVmEkbA1-b9J5lSRvRv53WrAvWBWgqSK74s8AMhu3MCq9hy1mUkXpS3MM3XHUf8ZpJTNbGWKnQ}{Zhu & Chen, (2015}
+#' first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 #' (default: FALSE)
 #' @param laughter Counts the number of times laughter was indicated in a quote. (default: FALSE)
 #' @return An R data frame with each row representing one quote. The columns indicate the quarter, year, section
 #' (presentation versus Q&A), the speaker's name, role, affiliation, and also three binary indicators on whether the
 #' speaker is the host company's (1) CEO, (2) CFO, and/or (3) Chairman.
 #' @examples
+#' \dontrun{
 #' earnings_calls_df <- conference_call_segmenter_folder(folder = "earnings_call");
 #' earnings_calls_df_sentiment <- conference_call_segmenter(file = "earnings_callf", sentiment = TRUE);
+#' }
 #' @export
 #'
 conference_call_segmenter_folder <- function(folder_path, sentiment = FALSE,
@@ -543,16 +548,27 @@ conference_call_segmenter_folder <- function(folder_path, sentiment = FALSE,
 #' dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa_token=Zye71gMR5RoAAAAA:G76SwrZDfECXcyMeROZkhSgBsvGWyiULh-Fy7kAb1fpxS4DCxpZZbocUfTesOm90lAa5vl-lKOvYVI7ZKxNS9eP0MlVN9eRv31kMGhSPD6ldjzqrSyeF)}{Gamache et al., 2015}
 #' (default: FALSE)
 #' @param narcissism Counts the number of pronoun usage and calculates the ratio of first-person singular to
-#' first-person plural pronouns. This measure is derived from \href{https://journals.sagepub.com/doi/pdf/10.1177/0001839214554989?casa_token=SE3k4io6um0AAAAA:gpJvbVmEkbA1-b9J5lSRvRv53WrAvWBWgqSK74s8AMhu3MCq9hy1mUkXpS3MM3XHUf8ZpJTNbGWKnQ}{Zhu & Chen, (2015}
+#' first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 #' (default: FALSE)
 #' @param laughter Counts the number of times laughter was indicated in a quote. (default: FALSE)
-#' @param title_clustering Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FAKSE)
+#' @param text_clustering Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FALSE)
 #' @return An R data frame with each row representing one newswire article. The columns indicate the title, text,
 #' newswire, date, and weekday.
 #' @examples
+#' \dontrun{
 #' newswire_df <- newswire_segmenter(file = "earnings_call.pdf");
 #' newswire_df_sentiment <- newswire_segmenter(file = "earnings_call.pdf", sentiment = TRUE);
+#' }
 #' @export
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_squish
+#' @importFrom stringr str_match
+#' @importFrom stringr str_split
+#' @importFrom stringr str_count
+#' @importFrom tm removeWords
+#' @importFrom tm stopwords
+#' @importFrom dplyr %>%
+#' @importFrom dplyr mutate
 #'
 newswire_segmenter <- function(file,
                                sentiment = FALSE,
@@ -560,12 +576,11 @@ newswire_segmenter <- function(file,
                                regulatory_focus = FALSE,
                                laughter = FALSE,
                                narcissism = FALSE,
-                               title_clustering = FALSE){
+                               text_clustering = FALSE){
 
   if(!file.exists(file)){
 
     print("File does not exist")
-    break
 
   }else{
 
@@ -664,7 +679,7 @@ newswire_segmenter <- function(file,
                               collapse = "|")
 
     # get word count per quote
-    press_data_temp$word_count <- strinr::str_count(press_data_temp$text, "\\w+")
+    press_data_temp$word_count <- stringr::str_count(press_data_temp$text, "\\w+")
 
     # count frequency words regulatory focus
     press_data_temp$promotion_focus <- stringr::str_count(press_data_temp$text,
@@ -704,7 +719,7 @@ newswire_segmenter <- function(file,
   }
 
 
-  if(title_clustering){
+  if(text_clustering){
 
     # Define function for text pre-processing
     preprocess_text <- function(text) {
@@ -719,7 +734,7 @@ newswire_segmenter <- function(file,
       # remove all words shorter than three letters
       text <- gsub("\\b\\w{1,2}\\b", "", text)
       # stem words
-      text <- wordStem(text)
+      text <- SnowballC::wordStem(text)
       # Return pre-processed text
       return(text)
     }
@@ -818,39 +833,48 @@ newswire_segmenter <- function(file,
 
   # assign valence to categoru according to Graffin
   # Create a vector of terms
-  terms_positive <- c("Change in dividend rate",
+  terms_positive <- paste(c("Change in dividend rate",
                        "New product",
                        "Customer win",
                        "Social good (e.g., donation, sponsorship),  training, professional development",
                        "Received award from third party",
                        "Buyback or split stock",
                        "Results of a sponsored study",
-                       "Partnership announcements")
+                       "Partnership announcements"), collapse = "|")
 
-  terms_negative <- c("Other acquisition",
+  terms_negative <- paste(c("Other acquisition",
                       "Completion of another acquisition",
-                      "Recall or safety issue")
+                      "Recall or safety issue"), collapse = "|")
 
-  terms_neutral <- c("New executive or director",
+  terms_neutral <- paste(c("New executive or director",
                      "Divestiture or plant closing",
                      "Settlement of litigation or other legal dispute",
                      "Executive retirement",
                      "Change of stock exchange listing",
                      "Debt issuance",
-                     "Others")
+                     "Others"), collapse = "|")
 
-  terms_ambiguous <- c("Earnings releases",
-                       "Earnings guidance")
+  terms_ambiguous <- paste(c("Earnings releases",
+                       "Earnings guidance"), collapse =  "|")
 
   # Use grepl() to check if any of the terms are found in category_Graffin
   press_data_temp <- press_data_temp %>%
-    mutate(valence_category = ifelse(sapply(terms_positive, grepl, category_Graffin), "positive",
-                                     ifelse(sapply(terms_negative, grepl, category_Graffin), "negative",
-                                            ifelse(sapply(terms_neutral, grepl, category_Graffin), "neutral",
-                                                   ifelse(sapply(terms_ambiguous, grepl, category_Graffin) & SentimentHE > 0.001, "positive",
-                                                          ifelse(sapply(terms_ambiguous, grepl, category_Graffin) & SentimentHE < -0.001, "negative",
-                                                                 ifelse(sapply(terms_ambiguous, grepl, category_Graffin) & SentimentHE >= -0.001 & SentimentHE <= 0.001, "neutral", NA)))))))
-
+    mutate(valence_category = ifelse(
+      grepl(terms_positive, category_Graffin), "positive",
+      ifelse(grepl(terms_negative, category_Graffin), "negative",
+             ifelse(grepl(terms_neutral, category_Graffin), "neutral",
+                    ifelse(
+                      grepl(terms_ambiguous, category_Graffin) & SentimentHE > 0.001, "positive",
+                      ifelse(
+                        grepl(terms_ambiguous, category_Graffin) & SentimentHE < -0.001, "negative",
+                        ifelse(
+                          grepl(terms_ambiguous, category_Graffin) & SentimentHE >= -0.001 & SentimentHE <= 0.001, "neutral", NA
+                        )
+                      )
+                    )
+             )
+      )
+    ))
 
   # return data frame
   return(press_data_temp)
@@ -862,8 +886,8 @@ newswire_segmenter <- function(file,
 #'
 #' Takes all PDF documents in a folder containing news-wire documents obtained from NexisUni and transforms them into
 #' an R data frame consisting of one row per document.
-#' @param file The name of the PDF file which the data are to be read
-#' from. If it does not contain an absolute path, the file name is
+#' @param folder_path The path to the folder in which the newswire PDFs reside.
+#' If it does not contain an absolute path, the folder name is
 #' relative to the current working directory, getwd().
 #' @param sentiment Performs dictionary-based sentiment analysis
 #' based on the \code{\link[SentimentAnalysis]{analyzeSentiment}}
@@ -875,20 +899,24 @@ newswire_segmenter <- function(file,
 #' dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa_token=Zye71gMR5RoAAAAA:G76SwrZDfECXcyMeROZkhSgBsvGWyiULh-Fy7kAb1fpxS4DCxpZZbocUfTesOm90lAa5vl-lKOvYVI7ZKxNS9eP0MlVN9eRv31kMGhSPD6ldjzqrSyeF)}{Gamache et al., 2015}
 #' (default: FALSE)
 #' @param narcissism Counts the number of pronoun usage and calculates the ratio of first-person singular to
-#' first-person plural pronouns. This measure is derived from \href{https://journals.sagepub.com/doi/pdf/10.1177/0001839214554989?casa_token=SE3k4io6um0AAAAA:gpJvbVmEkbA1-b9J5lSRvRv53WrAvWBWgqSK74s8AMhu3MCq9hy1mUkXpS3MM3XHUf8ZpJTNbGWKnQ}{Zhu & Chen, (2015}
+#' first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 #' (default: FALSE)
 #' @param laughter Counts the number of times laughter was indicated in a quote. (default: FALSE)
-#' @param title_clustering Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FALSE)
+#' @param text_clustering Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FALSE)
 #' @return An R data frame with each row representing one newswire article. The columns indicate the title, text,
 #' newswire, date, and weekday. (default: FAKSE)
 #' @return An R data frame with each row representing one newswire article. The columns indicate the title, text,
-#' newswire, date, and weekday. Depending on the additional arguemnts, the output data can also
+#' newswire, date, and weekday. Depending on the additional arguments, the output data can also
 #' contain sentiment, emotion, regulatory focus, laughter, narcissism and text cluster based on the Graffin et al.
 #' categories.
 #' @examples
-#' newswire_df <- newswire_segmenter(file = "press_release.pdf");
-#' newswire_df_sentiment <- newswire_segmenter(file = "press_release.pdf", sentiment = TRUE);
+#' \dontrun{
+#' newswire_df <- newswire_segmenter_folder(folder_path = "C:/newswire_collection");
+#' newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection", sentiment = TRUE);
+#' }
 #' @export
+#' @importFrom zoo rollmean
+#' @importFrom dplyr %>%
 #'
 newswire_segmenter_folder <- function(folder_path,
                                       sentiment = FALSE,
@@ -930,12 +958,15 @@ newswire_segmenter_folder <- function(folder_path,
 #' @param event_data An R data that contains two columns which have to be labeled "date_announced" and "CUSIP". The date_announced
 #' column contains the dates of the events for which impression offsetting is calculated. The CUSIP column contains the
 #' 8-digit CUSIP of the companies for which impression offsetting is calculated.
-#' @param press_data An R data frame with each row representing one newswire article. The columns indicate the title, text,
-#' newswire, date, and weekday
+#' @param press_data_categorized An R data frame with each row representing one newswire article. The columns indicate the title, text,
+#' newswire, date, and weekday. It should be the outcome of \code{\link[disclosuR]{newswire_segmenter}} in which both
+#' the argument sentiment and text_clustering have been set to TRUE.
 #' @return An R data frame which contains the column of the event_data plus three columns for the baseline announcements
 #' (positive, neutral, and negative) and three columns for the impression offsetting announcements (positive, neutral, and negative).
 #' @examples
+#' \dontrun{
 #' impression_offsetting(event_data, press_data)
+#' }
 #' @export
 #'
 # create impression offsetting data frame
@@ -970,7 +1001,7 @@ impression_offsetting <- function(event_data, press_data_categorized){
     impression_offsetting[i, "IO"] <- nrow(temp_data)
 
 
-    print(paste("CUSIP:", temp_cusip, "Date:", temp_date, "No of press:", nrow(temp_data), sep = " "))
+    print(paste("IO: CUSIP:", temp_cusip, "Date:", temp_date, "No of press:", nrow(temp_data), sep = " "))
   }
 
   # define impression offsetting data frame for baseline
@@ -1019,7 +1050,7 @@ impression_offsetting <- function(event_data, press_data_categorized){
       dplyr::summarise(baseline_positive_announcements = mean(three_day_avg, na.rm = TRUE))
     impression_offsetting_baseline[i, "baseline_positivity"] <- baseline_positive_announcements
 
-    print(paste("CUSIP:", temp_cusip, "Date:", temp_date, "No of press:", nrow(temp_data), sep = " "))
+    print(paste("Baseline: CUSIP:", temp_cusip, "Date:", temp_date, "No of press:", nrow(temp_data), sep = " "))
   }
 
   # merge IO and baseline data

@@ -11,7 +11,7 @@ newswire_segmenter(
   regulatory_focus = FALSE,
   laughter = FALSE,
   narcissism = FALSE,
-  title_clustering = FALSE
+  text_clustering = FALSE
 )
 }
 \arguments{
@@ -34,10 +34,10 @@ dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa
 \item{laughter}{Counts the number of times laughter was indicated in a quote. (default: FALSE)}
 
 \item{narcissism}{Counts the number of pronoun usage and calculates the ratio of first-person singular to
-first-person plural pronouns. This measure is derived from \href{https://journals.sagepub.com/doi/pdf/10.1177/0001839214554989?casa_token=SE3k4io6um0AAAAA:gpJvbVmEkbA1-b9J5lSRvRv53WrAvWBWgqSK74s8AMhu3MCq9hy1mUkXpS3MM3XHUf8ZpJTNbGWKnQ}{Zhu & Chen, (2015}
+first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 (default: FALSE)}
 
-\item{title_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FAKSE)}
+\item{text_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FALSE)}
 }
 \value{
 An R data frame with each row representing one newswire article. The columns indicate the title, text,
@@ -48,6 +48,8 @@ Takes a PDF document containing a news-wire document obtained from NexisUni and 
 an R data frame consisting of one row
 }
 \examples{
+\dontrun{
 newswire_df <- newswire_segmenter(file = "earnings_call.pdf");
 newswire_df_sentiment <- newswire_segmenter(file = "earnings_call.pdf", sentiment = TRUE);
+}
 }

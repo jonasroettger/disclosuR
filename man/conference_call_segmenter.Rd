@@ -33,7 +33,7 @@ dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa
 \item{laughter}{Counts the number of times laughter was indicated in a quote. (default: FALSE)}
 
 \item{narcissism}{Counts the number of pronoun usage and calculates the ratio of first-person singular to
-first-person plural pronouns. This measure is derived from \href{https://journals.sagepub.com/doi/pdf/10.1177/0001839214554989?casa_token=SE3k4io6um0AAAAA:gpJvbVmEkbA1-b9J5lSRvRv53WrAvWBWgqSK74s8AMhu3MCq9hy1mUkXpS3MM3XHUf8ZpJTNbGWKnQ}{Zhu & Chen, (2015}
+first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 (default: FALSE)}
 }
 \value{
@@ -45,6 +45,8 @@ speaker is the host company's (1) CEO, (2) CFO, and/or (3) Chairman.
 Converts one earnings call transcript from FairDisclosure obtained from NexisUni to an R data frame.
 }
 \examples{
+\dontrun{
 earnings_call_df <- conference_call_segmenter(file = "earnings_call.pdf");
 earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf", sentiment = TRUE);
+}
 }
