@@ -27,7 +27,7 @@ function (default: FALSE)}
 
 \item{regulatory_focus}{Calculates the number of words indicative for
 promotion and prevention focus based on the
-dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa_token=Zye71gMR5RoAAAAA:G76SwrZDfECXcyMeROZkhSgBsvGWyiULh-Fy7kAb1fpxS4DCxpZZbocUfTesOm90lAa5vl-lKOvYVI7ZKxNS9eP0MlVN9eRv31kMGhSPD6ldjzqrSyeF)}{Gamache et al., 2015}
+dictionary developed by \href{https://psycnet.apa.org/record/2015-41859-013}{Gamache et al., 2015}
 (default: FALSE)}
 
 \item{laughter}{Counts the number of times laughter was indicated in a quote. (default: FALSE)}
@@ -47,6 +47,7 @@ Converts one earnings call transcript from FairDisclosure obtained from NexisUni
 \examples{
 \dontrun{
 earnings_call_df <- conference_call_segmenter(file = "earnings_call.pdf");
-earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf", sentiment = TRUE);
+earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf",
+sentiment = TRUE);
 }
 }

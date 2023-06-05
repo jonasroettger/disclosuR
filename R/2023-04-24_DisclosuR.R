@@ -23,12 +23,14 @@
 #' @examples
 #' \dontrun{
 #' earnings_call_df <- conference_call_segmenter(file = "earnings_call.pdf");
-#' earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf", sentiment = TRUE);
+#' earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf",
+#' sentiment = TRUE);
 #' }
 #' @export
 #' @importFrom stringr str_replace_all
 #' @importFrom stringr str_squish
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
 #'
 conference_call_segmenter <- function(file,
                                       sentiment = FALSE,
@@ -377,7 +379,7 @@ conference_call_segmenter <- function(file,
     quotes_data_frame_one_call <- rbind(quotes_data_frame_pres, quotes_data_frame_q_and_a)
 
     # remove rows with only NA values
-    quotes_data_frame_one_call <- quotes_data_frame_one_call[complete.cases(quotes_data_frame_one_call), ]
+    quotes_data_frame_one_call <- quotes_data_frame_one_call[stats::complete.cases(quotes_data_frame_one_call), ]
 
     ### remove names from the quote column
     quotes_data_frame_one_call$quote <- gsub(".*:","",quotes_data_frame_one_call$quote)
@@ -387,7 +389,7 @@ conference_call_segmenter <- function(file,
 
     # sort data frame
     quotes_data_frame_one_call <- quotes_data_frame_one_call %>%
-      dplyr::arrange(section, quote_index)
+      dplyr::arrange(.data$section, .data$quote_index)
 
   }
 
@@ -557,7 +559,8 @@ conference_call_segmenter_folder <- function(folder_path, sentiment = FALSE,
 #' @examples
 #' \dontrun{
 #' newswire_df <- newswire_segmenter(file = "earnings_call.pdf");
-#' newswire_df_sentiment <- newswire_segmenter(file = "earnings_call.pdf", sentiment = TRUE);
+#' newswire_df_sentiment <- newswire_segmenter(file = "earnings_call.pdf",
+#' sentiment = TRUE);
 #' }
 #' @export
 #' @importFrom stringr str_replace_all
@@ -569,6 +572,7 @@ conference_call_segmenter_folder <- function(folder_path, sentiment = FALSE,
 #' @importFrom tm stopwords
 #' @importFrom dplyr %>%
 #' @importFrom dplyr mutate
+#' @importFrom rlang .data
 #'
 newswire_segmenter <- function(file,
                                sentiment = FALSE,
@@ -860,15 +864,15 @@ newswire_segmenter <- function(file,
   # Use grepl() to check if any of the terms are found in category_Graffin
   press_data_temp <- press_data_temp %>%
     mutate(valence_category = ifelse(
-      grepl(terms_positive, category_Graffin), "positive",
-      ifelse(grepl(terms_negative, category_Graffin), "negative",
-             ifelse(grepl(terms_neutral, category_Graffin), "neutral",
+      grepl(terms_positive, .data$category_Graffin), "positive",
+      ifelse(grepl(terms_negative, .data$category_Graffin), "negative",
+             ifelse(grepl(terms_neutral, .data$category_Graffin), "neutral",
                     ifelse(
-                      grepl(terms_ambiguous, category_Graffin) & SentimentHE > 0.001, "positive",
+                      grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE > 0.001, "positive",
                       ifelse(
-                        grepl(terms_ambiguous, category_Graffin) & SentimentHE < -0.001, "negative",
+                        grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE < -0.001, "negative",
                         ifelse(
-                          grepl(terms_ambiguous, category_Graffin) & SentimentHE >= -0.001 & SentimentHE <= 0.001, "neutral", NA
+                          grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE >= -0.001 & .data$SentimentHE <= 0.001, "neutral", NA
                         )
                       )
                     )
@@ -912,11 +916,13 @@ newswire_segmenter <- function(file,
 #' @examples
 #' \dontrun{
 #' newswire_df <- newswire_segmenter_folder(folder_path = "C:/newswire_collection");
-#' newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection", sentiment = TRUE);
+#' newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection",
+#' sentiment = TRUE);
 #' }
 #' @export
 #' @importFrom zoo rollmean
 #' @importFrom dplyr %>%
+#'
 #'
 newswire_segmenter_folder <- function(folder_path,
                                       sentiment = FALSE,
@@ -968,6 +974,7 @@ newswire_segmenter_folder <- function(folder_path,
 #' impression_offsetting(event_data, press_data)
 #' }
 #' @export
+#' @importFrom rlang .data
 #'
 # create impression offsetting data frame
 impression_offsetting <- function(event_data, press_data_categorized){
@@ -1001,7 +1008,10 @@ impression_offsetting <- function(event_data, press_data_categorized){
     impression_offsetting[i, "IO"] <- nrow(temp_data)
 
 
-    print(paste("IO: CUSIP:", temp_cusip, "Date:", temp_date, "No of press:", nrow(temp_data), sep = " "))
+    print(paste("IO: CUSIP:",
+                temp_cusip, "Date:",
+                temp_date, "No of press:",
+                nrow(temp_data), sep = " "))
   }
 
   # define impression offsetting data frame for baseline
@@ -1043,14 +1053,17 @@ impression_offsetting <- function(event_data, press_data_categorized){
     # Calculate the three-day rolling average of positive announcements for each firm
     df_complete <- df_complete %>%
       dplyr::arrange(date) %>%
-      dplyr::mutate(three_day_avg = rollmean(valence_category, 3, fill = NA, align = "right"))
+      dplyr::mutate(three_day_avg = rollmean(.data$valence_category, 3, fill = NA, align = "right"))
 
     # Calculate the baseline positive announcements as the average three-day count in the three-month period
     baseline_positive_announcements <- df_complete %>%
-      dplyr::summarise(baseline_positive_announcements = mean(three_day_avg, na.rm = TRUE))
+      dplyr::summarise(baseline_positive_announcements = mean(.data$three_day_avg, na.rm = TRUE))
     impression_offsetting_baseline[i, "baseline_positivity"] <- baseline_positive_announcements
 
-    print(paste("Baseline: CUSIP:", temp_cusip, "Date:", temp_date, "No of press:", nrow(temp_data), sep = " "))
+    print(paste("Baseline: CUSIP:",
+                temp_cusip, "Date:",
+                temp_date, "No of press:",
+                nrow(temp_data), sep = " "))
   }
 
   # merge IO and baseline data

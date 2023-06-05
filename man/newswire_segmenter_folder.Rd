@@ -28,7 +28,7 @@ function (default: FALSE)}
 
 \item{regulatory_focus}{Calculates the number of words indicative for
 promotion and prevention focus based on the
-dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa_token=Zye71gMR5RoAAAAA:G76SwrZDfECXcyMeROZkhSgBsvGWyiULh-Fy7kAb1fpxS4DCxpZZbocUfTesOm90lAa5vl-lKOvYVI7ZKxNS9eP0MlVN9eRv31kMGhSPD6ldjzqrSyeF)}{Gamache et al., 2015}
+dictionary developed by \href{https://psycnet.apa.org/record/2015-41859-013}{Gamache et al., 2015}
 (default: FALSE)}
 
 \item{laughter}{Counts the number of times laughter was indicated in a quote. (default: FALSE)}
@@ -37,11 +37,11 @@ dictionary developed by \href{https://www.jstor.org/stable/pdf/43589392.pdf?casa
 first-person plural pronouns. This measure is derived from \href{https://psycnet.apa.org/record/2015-06474-002}{Zhu & Chen, (2015}
 (default: FALSE)}
 
-\item{text_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://journals.aom.org/doi/abs/10.5465/amj.2013.0288}{Graffin et al., 2016}. (default: FALSE)}
+\item{text_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://escholarship.org/uc/item/026179rh}{Graffin et al., 2016}. (default: FALSE)}
 }
 \value{
 An R data frame with each row representing one newswire article. The columns indicate the title, text,
-newswire, date, and weekday. (default: FAKSE)
+newswire, date, and weekday. (default: FALSE)
 
 An R data frame with each row representing one newswire article. The columns indicate the title, text,
 newswire, date, and weekday. Depending on the additional arguments, the output data can also
@@ -55,6 +55,7 @@ an R data frame consisting of one row per document.
 \examples{
 \dontrun{
 newswire_df <- newswire_segmenter_folder(folder_path = "C:/newswire_collection");
-newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection", sentiment = TRUE);
+newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection",
+sentiment = TRUE);
 }
 }
