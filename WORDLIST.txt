@@ -1,0 +1,4 @@
+# WORDLIST
+FairDisclosure 
+newswire 
+newswires 
