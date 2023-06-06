@@ -11,8 +11,8 @@ impression_offsetting(event_data, press_data_categorized)
 column contains the dates of the events for which impression offsetting is calculated. The CUSIP column contains the
 8-digit CUSIP of the companies for which impression offsetting is calculated.}
 
-\item{press_data_categorized}{An R data frame with each row representing one newswire article. The columns indicate the title, text,
-newswire, date, and weekday. It should be the outcome of \code{\link[disclosuR]{newswire_segmenter}} in which both
+\item{press_data_categorized}{An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+'newswire', date, and weekday. It should be the outcome of \code{\link[disclosuR]{newswire_segmenter}} in which both
 the argument sentiment and text_clustering have been set to TRUE.}
 }
 \value{
@@ -20,11 +20,11 @@ An R data frame which contains the column of the event_data plus three columns f
 (positive, neutral, and negative) and three columns for the impression offsetting announcements (positive, neutral, and negative).
 }
 \description{
-This function takes in an event data set containing of dates and CUSIPs which have to correspond
-to a press data frame compiled by the function
+Takes an event data set containing of dates and CUSIPs which have to correspond
+to a press data frame compiled by the function \code{\link{newswire_segmenter_folder}}.
 }
 \examples{
-\dontrun{
+\donttest{
 impression_offsetting(event_data, press_data)
 }
 }

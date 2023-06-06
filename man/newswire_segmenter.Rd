@@ -40,15 +40,15 @@ first-person plural pronouns. This measure is derived from \href{https://psycnet
 \item{text_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://escholarship.org/uc/item/026179rh}{Graffin et al., 2016}. (default: FALSE)}
 }
 \value{
-An R data frame with each row representing one newswire article. The columns indicate the title, text,
-newswire, date, and weekday.
+An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+'newswire', date, and weekday.
 }
 \description{
-Takes a PDF document containing a news-wire document obtained from NexisUni and transforms it into
+Takes a PDF document containing a 'newswire' document obtained from 'NexisUni' and transforms it into
 an R data frame consisting of one row
 }
 \examples{
-\dontrun{
+\donttest{
 newswire_df <- newswire_segmenter(file = "earnings_call.pdf");
 newswire_df_sentiment <- newswire_segmenter(file = "earnings_call.pdf",
 sentiment = TRUE);

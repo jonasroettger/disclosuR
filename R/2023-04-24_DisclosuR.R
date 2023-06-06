@@ -1,6 +1,6 @@
 #' Earnings call segmenter
 #'
-#' Converts one earnings call transcript from FairDisclosure obtained from NexisUni to an R data frame.
+#' Converts one earnings call transcript from 'FairDisclosure' obtained from 'NexisUni' to an R data frame.
 #' @param file The name of the PDF file which the data are to be read
 #' from. If it does not contain an absolute path, the file name is
 #' relative to the current working directory, getwd().
@@ -21,7 +21,7 @@
 #' (presentation versus Q&A), the speaker's name, role, affiliation, and also three binary indicators on whether the
 #' speaker is the host company's (1) CEO, (2) CFO, and/or (3) Chairman.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' earnings_call_df <- conference_call_segmenter(file = "earnings_call.pdf");
 #' earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf",
 #' sentiment = TRUE);
@@ -41,7 +41,7 @@ conference_call_segmenter <- function(file,
 
   if(!file.exists(file)){
 
-    print("File does not exist")
+    warning("File does not exist")
 
   }else{
 
@@ -476,7 +476,7 @@ conference_call_segmenter <- function(file,
 
 #' Earnings call segmenter (multiple files)
 #'
-#' Converts all FairDisclosure earnings call transcripts obtained from NexisUnie
+#' Converts all 'FairDisclosure' earnings call transcripts obtained from 'NexisUni'
 #' in a folder to an R data frame.
 #' @param folder_path The name of the folder which the data are to be read
 #' from. If it does not contain an absolute path, the file name is
@@ -497,7 +497,7 @@ conference_call_segmenter <- function(file,
 #' (presentation versus Q&A), the speaker's name, role, affiliation, and also three binary indicators on whether the
 #' speaker is the host company's (1) CEO, (2) CFO, and/or (3) Chairman.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' earnings_calls_df <- conference_call_segmenter_folder(folder = "earnings_call");
 #' earnings_calls_df_sentiment <- conference_call_segmenter(file = "earnings_callf", sentiment = TRUE);
 #' }
@@ -508,6 +508,16 @@ conference_call_segmenter_folder <- function(folder_path, sentiment = FALSE,
                                              regulatory_focus = FALSE,
                                              laughter = FALSE,
                                              narcissism = FALSE){
+
+  if(!dir.exists(folder_path)){
+
+    warning("File does not exist")
+
+  }else{
+
+    print("Folder exists")
+
+  }
 
   # print folder
   print(paste("Folder to analyze:", folder_path, sep = " "))
@@ -535,7 +545,7 @@ conference_call_segmenter_folder <- function(folder_path, sentiment = FALSE,
 
 #' Newswire segmenter
 #'
-#' Takes a PDF document containing a news-wire document obtained from NexisUni and transforms it into
+#' Takes a PDF document containing a 'newswire' document obtained from 'NexisUni' and transforms it into
 #' an R data frame consisting of one row
 #' @param file The name of the PDF file which the data are to be read
 #' from. If it does not contain an absolute path, the file name is
@@ -554,10 +564,10 @@ conference_call_segmenter_folder <- function(folder_path, sentiment = FALSE,
 #' (default: FALSE)
 #' @param laughter Counts the number of times laughter was indicated in a quote. (default: FALSE)
 #' @param text_clustering Applies a document categorization using a dictionary developed based on the framework developed by \href{https://escholarship.org/uc/item/026179rh}{Graffin et al., 2016}. (default: FALSE)
-#' @return An R data frame with each row representing one newswire article. The columns indicate the title, text,
-#' newswire, date, and weekday.
+#' @return An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+#' 'newswire', date, and weekday.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' newswire_df <- newswire_segmenter(file = "earnings_call.pdf");
 #' newswire_df_sentiment <- newswire_segmenter(file = "earnings_call.pdf",
 #' sentiment = TRUE);
@@ -584,7 +594,7 @@ newswire_segmenter <- function(file,
 
   if(!file.exists(file)){
 
-    print("File does not exist")
+    warning("File does not exist")
 
   }else{
 
@@ -888,9 +898,9 @@ newswire_segmenter <- function(file,
 
 #' Newswire segmenter (multiple files)
 #'
-#' Takes all PDF documents in a folder containing news-wire documents obtained from NexisUni and transforms them into
+#' Takes all PDF documents in a folder containing 'newswire' documents obtained from 'NexisUni' and transforms them into
 #' an R data frame consisting of one row per document.
-#' @param folder_path The path to the folder in which the newswire PDFs reside.
+#' @param folder_path The path to the folder in which the 'newswire' PDFs reside.
 #' If it does not contain an absolute path, the folder name is
 #' relative to the current working directory, getwd().
 #' @param sentiment Performs dictionary-based sentiment analysis
@@ -907,14 +917,14 @@ newswire_segmenter <- function(file,
 #' (default: FALSE)
 #' @param laughter Counts the number of times laughter was indicated in a quote. (default: FALSE)
 #' @param text_clustering Applies a document categorization using a dictionary developed based on the framework developed by \href{https://escholarship.org/uc/item/026179rh}{Graffin et al., 2016}. (default: FALSE)
-#' @return An R data frame with each row representing one newswire article. The columns indicate the title, text,
-#' newswire, date, and weekday. (default: FALSE)
-#' @return An R data frame with each row representing one newswire article. The columns indicate the title, text,
-#' newswire, date, and weekday. Depending on the additional arguments, the output data can also
+#' @return An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+#' 'newswire', date, and weekday. (default: FALSE)
+#' @return An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+#' 'newswire', date, and weekday. Depending on the additional arguments, the output data can also
 #' contain sentiment, emotion, regulatory focus, laughter, narcissism and text cluster based on the Graffin et al.
 #' categories.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' newswire_df <- newswire_segmenter_folder(folder_path = "C:/newswire_collection");
 #' newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection",
 #' sentiment = TRUE);
@@ -932,45 +942,45 @@ newswire_segmenter_folder <- function(folder_path,
                                       narcissism = FALSE,
                                       text_clustering = FALSE){
 
-                                        # print folder
-                                        print(paste("Folder to analyze:", folder_path, sep = " "))
+  # print folder
+  print(paste("Folder to analyze:", folder_path, sep = " "))
 
-                                        # get all pdf in a folder
-                                        pdf_files <- list.files(path = folder_path,
-                                                                full.names = T,
-                                                                pattern = "pdf$|PDF$")
+  # get all pdf in a folder
+  pdf_files <- list.files(path = folder_path,
+                          full.names = T,
+                          pattern = "pdf$|PDF$")
 
-                                        # apply the function to each PDF file using lapply and store the results in a list
-                                        result_list <- lapply(pdf_files, newswire_segmenter,
-                                                              sentiment = sentiment,
-                                                              emotion = emotion,
-                                                              regulatory_focus = regulatory_focus,
-                                                              laughter = laughter,
-                                                              narcissism = narcissism,
-                                                              text_clustering = text_clustering)
+  # apply the function to each PDF file using lapply and store the results in a list
+  result_list <- lapply(pdf_files, newswire_segmenter,
+                        sentiment = sentiment,
+                        emotion = emotion,
+                        regulatory_focus = regulatory_focus,
+                        laughter = laughter,
+                        narcissism = narcissism,
+                        text_clustering = text_clustering)
 
-                                        # merge all the dataframes into one using the `dplyr` package
-                                        final_result <- dplyr::bind_rows(result_list)
+  # merge all the dataframes into one using the `dplyr` package
+  final_result <- dplyr::bind_rows(result_list)
 
-                                        # return final data frame
-                                        return(final_result)
+  # return final data frame
+  return(final_result)
 
-                                      }
+  }
 
 #' Impression offsetting
 #'
-#' This function takes in an event data set containing of dates and CUSIPs which have to correspond
-#' to a press data frame compiled by the function
+#' Takes an event data set containing of dates and CUSIPs which have to correspond
+#' to a press data frame compiled by the function \code{\link{newswire_segmenter_folder}}.
 #' @param event_data An R data that contains two columns which have to be labeled "date_announced" and "CUSIP". The date_announced
 #' column contains the dates of the events for which impression offsetting is calculated. The CUSIP column contains the
 #' 8-digit CUSIP of the companies for which impression offsetting is calculated.
-#' @param press_data_categorized An R data frame with each row representing one newswire article. The columns indicate the title, text,
-#' newswire, date, and weekday. It should be the outcome of \code{\link[disclosuR]{newswire_segmenter}} in which both
+#' @param press_data_categorized An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+#' 'newswire', date, and weekday. It should be the outcome of \code{\link[disclosuR]{newswire_segmenter}} in which both
 #' the argument sentiment and text_clustering have been set to TRUE.
 #' @return An R data frame which contains the column of the event_data plus three columns for the baseline announcements
 #' (positive, neutral, and negative) and three columns for the impression offsetting announcements (positive, neutral, and negative).
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' impression_offsetting(event_data, press_data)
 #' }
 #' @export

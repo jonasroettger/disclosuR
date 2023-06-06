@@ -41,11 +41,11 @@ An R data frame with each row representing one quote. The columns indicate the q
 speaker is the host company's (1) CEO, (2) CFO, and/or (3) Chairman.
 }
 \description{
-Converts all FairDisclosure earnings call transcripts obtained from NexisUnie
+Converts all 'FairDisclosure' earnings call transcripts obtained from 'NexisUni'
 in a folder to an R data frame.
 }
 \examples{
-\dontrun{
+\donttest{
 earnings_calls_df <- conference_call_segmenter_folder(folder = "earnings_call");
 earnings_calls_df_sentiment <- conference_call_segmenter(file = "earnings_callf", sentiment = TRUE);
 }

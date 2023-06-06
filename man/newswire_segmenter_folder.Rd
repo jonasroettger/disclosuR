@@ -15,7 +15,7 @@ newswire_segmenter_folder(
 )
 }
 \arguments{
-\item{folder_path}{The path to the folder in which the newswire PDFs reside.
+\item{folder_path}{The path to the folder in which the 'newswire' PDFs reside.
 If it does not contain an absolute path, the folder name is
 relative to the current working directory, getwd().}
 
@@ -40,20 +40,20 @@ first-person plural pronouns. This measure is derived from \href{https://psycnet
 \item{text_clustering}{Applies a document categorization using a dictionary developed based on the framework developed by \href{https://escholarship.org/uc/item/026179rh}{Graffin et al., 2016}. (default: FALSE)}
 }
 \value{
-An R data frame with each row representing one newswire article. The columns indicate the title, text,
-newswire, date, and weekday. (default: FALSE)
+An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+'newswire', date, and weekday. (default: FALSE)
 
-An R data frame with each row representing one newswire article. The columns indicate the title, text,
-newswire, date, and weekday. Depending on the additional arguments, the output data can also
+An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
+'newswire', date, and weekday. Depending on the additional arguments, the output data can also
 contain sentiment, emotion, regulatory focus, laughter, narcissism and text cluster based on the Graffin et al.
 categories.
 }
 \description{
-Takes all PDF documents in a folder containing news-wire documents obtained from NexisUni and transforms them into
+Takes all PDF documents in a folder containing 'newswire' documents obtained from 'NexisUni' and transforms them into
 an R data frame consisting of one row per document.
 }
 \examples{
-\dontrun{
+\donttest{
 newswire_df <- newswire_segmenter_folder(folder_path = "C:/newswire_collection");
 newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection",
 sentiment = TRUE);
