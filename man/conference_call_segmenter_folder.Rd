@@ -45,8 +45,16 @@ Converts all 'FairDisclosure' earnings call transcripts obtained from 'NexisUni'
 in a folder to an R data frame.
 }
 \examples{
-\donttest{
-earnings_calls_df <- conference_call_segmenter_folder(folder = "earnings_call");
-earnings_calls_df_sentiment <- conference_call_segmenter(file = "earnings_callf", sentiment = TRUE);
-}
+earnings_calls_df <- conference_call_segmenter_folder(
+folder_path = system.file("inst",
+"examples",
+"earnings_calls",
+package = "disclosuR"));
+earnings_calls_df_sentiment <- conference_call_segmenter_folder(
+folder_path = system.file("inst",
+"examples",
+"newswire",
+sentiment = TRUE,
+package = "disclosuR"));
+
 }

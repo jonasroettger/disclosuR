@@ -24,7 +24,7 @@ Takes an event data set containing of dates and CUSIPs which have to correspond
 to a press data frame compiled by the function \code{\link{newswire_segmenter_folder}}.
 }
 \examples{
-\donttest{
+\dontrun{
 impression_offsetting(event_data, press_data)
 }
 }

@@ -53,9 +53,15 @@ Takes all PDF documents in a folder containing 'newswire' documents obtained fro
 an R data frame consisting of one row per document.
 }
 \examples{
-\donttest{
-newswire_df <- newswire_segmenter_folder(folder_path = "C:/newswire_collection");
-newswire_df_sentiment <- newswire_segmenter_folder(folder_path = "C:/newswire_collection",
-sentiment = TRUE);
-}
+newswire_df <- newswire_segmenter_folder(
+folder_path = system.file("inst",
+"examples",
+"newswire",
+package = "disclosuR"));
+newswire_df_sentiment <- newswire_segmenter_folder(
+folder_path = system.file("inst",
+"examples",
+"newswire",
+package = "dislosuR"), sentiment = TRUE);
+
 }

@@ -45,9 +45,14 @@ speaker is the host company's (1) CEO, (2) CFO, and/or (3) Chairman.
 Converts one earnings call transcript from 'FairDisclosure' obtained from 'NexisUni' to an R data frame.
 }
 \examples{
-\donttest{
-earnings_call_df <- conference_call_segmenter(file = "earnings_call.pdf");
-earnings_call_df_sentiment <- conference_call_segmenter(file = "earnings_call.pdf",
+earnings_calls_df <- conference_call_segmenter(file = system.file("inst",
+"examples",
+"earnings_calls", "earnings_example_01.pdf",
+package = "disclosuR"));
+earnings_calls_df_sentiment <- conference_call_segmenter(file = system.file("inst",
+"examples",
+"newswire", "earnings_example_01.pdf",
+package = "disclosuR"),
 sentiment = TRUE);
-}
+
 }

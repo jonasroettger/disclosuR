@@ -48,9 +48,15 @@ Takes a PDF document containing a 'newswire' document obtained from 'NexisUni' a
 an R data frame consisting of one row
 }
 \examples{
-\donttest{
-newswire_df <- newswire_segmenter(file = "earnings_call.pdf");
-newswire_df_sentiment <- newswire_segmenter(file = "earnings_call.pdf",
-sentiment = TRUE);
-}
+newswire_df <- newswire_segmenter(
+file = system.file("inst",
+"examples",
+"newswire", "newswire_example_01.pdf",
+package = "disclosuR"));
+newswire_df_sentiment <- newswire_segmenter(
+file = system.file("inst",
+"examples",
+"newswire", "newswire_example_01.pdf",
+sentiment = TRUE,
+package = "disclosuR"));
 }
