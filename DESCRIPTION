@@ -1,7 +1,7 @@
 Package: disclosuR
 Type: Package
 Title: Text Conversion from Nexis Uni PDFs to R Data Frames
-Version: 0.4.0
+Version: 0.5.0
 Date: 2023-06-05
 Authors@R:
   person("Jonas", "Röttger", role = c("aut", "cre"), 
