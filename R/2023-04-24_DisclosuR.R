@@ -832,7 +832,8 @@ newswire_segmenter <- function(file,
           category <- keywords$Category[j]
           keywords_list <- unlist(strsplit(keywords$Keywords[j], "\\|"))
           # count the number of matches in the text column of press_data_temp
-          count <- sum(stringr::str_count(press_data_temp$preprocessed_title[i], stringr::regex(keywords_list, ignore_case = TRUE)))
+          count <- sum(stringr::str_count(press_data_temp$preprocessed_title[i],
+                                          stringr::regex(keywords_list, ignore_case = TRUE)))
           # store the count for this category
           counts[j] <- count
           # update the category column in press_data_temp
@@ -843,7 +844,7 @@ newswire_segmenter <- function(file,
 
       # add the most frequent column name to a new column
       # Create new column to store column names with highest values
-      press_data_temp$category_Graffin <- apply(press_data_temp[, which(names(press_data_temp) == "preprocessed_title"):ncol(press_data_temp)], 1, function(row) {
+      press_data_temp$category_Graffin <- apply(press_data_temp[, which(names(press_data_temp) == "preprocessed_title")+1:ncol(press_data_temp)], 1, function(row) {
           # Check if all values in the row are zero
           if(all(row == 0)){
             return("Others")
