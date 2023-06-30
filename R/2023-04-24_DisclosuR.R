@@ -58,7 +58,7 @@ conference_call_segmenter <- function(file,
 
     # get end of date and date
     date_end <- "Copyright"
-    date <- stringr::str_match(stringr::str_replace_all(str_squish(text), "[\r\n]" , ""), paste("Wire", "\\s*(.*?)\\s*", date_end, sep = ""))[[2]]
+    date <- stringr::str_match(stringr::str_replace_all(stringr::str_squish(text), "[\r\n]" , ""), paste("Wire", "\\s*(.*?)\\s*", date_end, sep = ""))[[2]]
 
     # convert the string to a date variable
     date <- as.Date(date, "%B %d, %Y %A")
@@ -764,7 +764,7 @@ newswire_segmenter <- function(file,
         # Remove extra whitespace
         text <- gsub("\\s+", " ", text)
         # Remove stop words
-        text <- removeWords(text, stopwords("english"))
+        text <- tm::removeWords(text, tm::stopwords("english"))
         # remove all words shorter than three letters
         text <- gsub("\\b\\w{1,2}\\b", "", text)
         # stem words
@@ -844,7 +844,8 @@ newswire_segmenter <- function(file,
 
       # add the most frequent column name to a new column
       # Create new column to store column names with highest values
-      press_data_temp$category_Graffin <- apply(press_data_temp[, which(names(press_data_temp) == "preprocessed_title")+1:ncol(press_data_temp)], 1, function(row) {
+      first_category_column_index <- which(names(press_data_temp) == "preprocessed_title")+1
+      press_data_temp$category_Graffin <- apply(press_data_temp[, first_category_column_index:ncol(press_data_temp)], 1, function(row) {
           # Check if all values in the row are zero
           if(all(row == 0)){
             return("Others")
@@ -864,52 +865,52 @@ newswire_segmenter <- function(file,
           }
         })
 
-    }
+      # assign valence to categoru according to Graffin
+      # Create a vector of terms
+      terms_positive <- paste(c("Change in dividend rate",
+                           "New product",
+                           "Customer win",
+                           "Social good (e.g., donation, sponsorship),  training, professional development",
+                           "Received award from third party",
+                           "Buyback or split stock",
+                           "Results of a sponsored study",
+                           "Partnership announcements"), collapse = "|")
 
-    # assign valence to categoru according to Graffin
-    # Create a vector of terms
-    terms_positive <- paste(c("Change in dividend rate",
-                         "New product",
-                         "Customer win",
-                         "Social good (e.g., donation, sponsorship),  training, professional development",
-                         "Received award from third party",
-                         "Buyback or split stock",
-                         "Results of a sponsored study",
-                         "Partnership announcements"), collapse = "|")
+      terms_negative <- paste(c("Other acquisition",
+                          "Completion of another acquisition",
+                          "Recall or safety issue"), collapse = "|")
 
-    terms_negative <- paste(c("Other acquisition",
-                        "Completion of another acquisition",
-                        "Recall or safety issue"), collapse = "|")
+      terms_neutral <- paste(c("New executive or director",
+                         "Divestiture or plant closing",
+                         "Settlement of litigation or other legal dispute",
+                         "Executive retirement",
+                         "Change of stock exchange listing",
+                         "Debt issuance",
+                         "Others"), collapse = "|")
 
-    terms_neutral <- paste(c("New executive or director",
-                       "Divestiture or plant closing",
-                       "Settlement of litigation or other legal dispute",
-                       "Executive retirement",
-                       "Change of stock exchange listing",
-                       "Debt issuance",
-                       "Others"), collapse = "|")
+      terms_ambiguous <- paste(c("Earnings releases",
+                           "Earnings guidance"), collapse =  "|")
 
-    terms_ambiguous <- paste(c("Earnings releases",
-                         "Earnings guidance"), collapse =  "|")
-
-    # Use grepl() to check if any of the terms are found in category_Graffin
-    press_data_temp <- press_data_temp %>%
-      dplyr::mutate(valence_category = ifelse(
-        grepl(terms_positive, .data$category_Graffin), "positive",
-        ifelse(grepl(terms_negative, .data$category_Graffin), "negative",
-               ifelse(grepl(terms_neutral, .data$category_Graffin), "neutral",
-                      ifelse(
-                        grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE > 0.001, "positive",
+      # Use grepl() to check if any of the terms are found in category_Graffin
+      press_data_temp <- press_data_temp %>%
+        dplyr::mutate(valence_category = ifelse(
+          grepl(terms_positive, .data$category_Graffin), "positive",
+          ifelse(grepl(terms_negative, .data$category_Graffin), "negative",
+                 ifelse(grepl(terms_neutral, .data$category_Graffin), "neutral",
                         ifelse(
-                          grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE < -0.001, "negative",
+                          grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE > 0.001, "positive",
                           ifelse(
-                            grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE >= -0.001 & .data$SentimentHE <= 0.001, "neutral", NA
+                            grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE < -0.001, "negative",
+                            ifelse(
+                              grepl(terms_ambiguous, .data$category_Graffin) & .data$SentimentHE >= -0.001 & .data$SentimentHE <= 0.001, "neutral", NA
+                            )
                           )
                         )
-                      )
-               )
-        )
-      ))
+                 )
+          )
+        ))
+
+    }
 
     # return data frame
     return(press_data_temp)
@@ -1000,9 +1001,10 @@ newswire_segmenter_folder <- function(folder_path,
 #'
 #' Takes an event data set containing of dates and CUSIPs which have to correspond
 #' to a press data frame compiled by the function \code{\link{newswire_segmenter_folder}}.
-#' @param event_data An R data that contains two columns which have to be labeled "date_announced" and "CUSIP". The date_announced
-#' column contains the dates of the events for which impression offsetting is calculated. The CUSIP column contains the
-#' 8-digit CUSIP of the companies for which impression offsetting is calculated.
+#' @param event_data An R data that contains three columns which have to be labeled "date_announced", "cusip", and "ID".
+#' The date_announced column contains the dates of the events for which impression offsetting is calculated.
+#' The cusip column contains the 8-digit cusip of the companies for which impression offsetting is calculated.
+#' The ID column should contain a unique ID that identifies the specific event.
 #' @param press_data_categorized An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
 #' 'newswire', date, and weekday. It should be the outcome of \code{\link[disclosuR]{newswire_segmenter}} in which both
 #' the argument sentiment and text_clustering have been set to TRUE.
@@ -1092,7 +1094,7 @@ impression_offsetting <- function(event_data, press_data_categorized){
     # Calculate the three-day rolling average of positive announcements for each firm
     df_complete <- df_complete %>%
       dplyr::arrange(date) %>%
-      dplyr::mutate(three_day_avg = rollmean(.data$valence_category, 3, fill = NA, align = "right"))
+      dplyr::mutate(three_day_avg = zoo::rollmean(.data$valence_category, 3, fill = NA, align = "right"))
 
     # Calculate the baseline positive announcements as the average three-day count in the three-month period
     baseline_positive_announcements <- df_complete %>%

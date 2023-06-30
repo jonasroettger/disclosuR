@@ -7,9 +7,10 @@
 impression_offsetting(event_data, press_data_categorized)
 }
 \arguments{
-\item{event_data}{An R data that contains two columns which have to be labeled "date_announced" and "CUSIP". The date_announced
-column contains the dates of the events for which impression offsetting is calculated. The CUSIP column contains the
-8-digit CUSIP of the companies for which impression offsetting is calculated.}
+\item{event_data}{An R data that contains three columns which have to be labeled "date_announced", "cusip", and "ID".
+The date_announced column contains the dates of the events for which impression offsetting is calculated.
+The cusip column contains the 8-digit cusip of the companies for which impression offsetting is calculated.
+The ID column should contain a unique ID that identifies the specific event.}
 
 \item{press_data_categorized}{An R data frame with each row representing one 'newswire' article. The columns indicate the title, text,
 'newswire', date, and weekday. It should be the outcome of \code{\link[disclosuR]{newswire_segmenter}} in which both
