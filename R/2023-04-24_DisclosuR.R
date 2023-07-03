@@ -1016,6 +1016,7 @@ newswire_segmenter_folder <- function(folder_path,
 #' }
 #' @export
 #' @importFrom rlang .data
+#' @import zoo rollapply
 #'
 # create impression offsetting data frame
 impression_offsetting <- function(event_data, press_data_categorized){
@@ -1031,6 +1032,7 @@ impression_offsetting <- function(event_data, press_data_categorized){
   press_data <- press_data[press_data$valence_category == "positive", ]
   press_data$date <- as.Date(press_data$date)
   press_data$valence_category <- ifelse(press_data$valence_category == "positive", 1, 0)
+  press_data$cusip <- substr(press_data$cusip, start = 1, stop = 8)
 
   # loop over deals and select impression offsetting press statements
   for (i in 1:nrow(event_data)) {
@@ -1050,9 +1052,9 @@ impression_offsetting <- function(event_data, press_data_categorized){
 
 
     message(paste("IO: CUSIP:",
-                temp_cusip, "Date:",
-                temp_date, "No of press:",
-                nrow(temp_data), sep = " "))
+                  temp_cusip, "Date:",
+                  temp_date, "No of press:",
+                  nrow(temp_data), sep = " "))
   }
 
   # define impression offsetting data frame for baseline
@@ -1094,7 +1096,13 @@ impression_offsetting <- function(event_data, press_data_categorized){
     # Calculate the three-day rolling average of positive announcements for each firm
     df_complete <- df_complete %>%
       dplyr::arrange(date) %>%
-      dplyr::mutate(three_day_avg = zoo::rollmean(.data$valence_category, 3, fill = NA, align = "right"))
+      dplyr::mutate(three_day_avg = zoo::rollapply(.data$valence_category,
+                                                   width=3,
+                                                   FUN=function(x) mean(x, na.rm=TRUE),
+                                                   by=1, by.column=TRUE,
+                                                   partial=TRUE,
+                                                   fill=NA,
+                                                   align="right"))
 
     # Calculate the baseline positive announcements as the average three-day count in the three-month period
     baseline_positive_announcements <- df_complete %>%
@@ -1102,9 +1110,9 @@ impression_offsetting <- function(event_data, press_data_categorized){
     impression_offsetting_baseline[i, "baseline_positivity"] <- baseline_positive_announcements
 
     message(paste("Baseline: CUSIP:",
-                temp_cusip, "Date:",
-                temp_date, "No of press:",
-                nrow(temp_data), sep = " "))
+                  temp_cusip, "Date:",
+                  temp_date, "No of press:",
+                  nrow(temp_data), sep = " "))
   }
 
   # merge IO and baseline data
@@ -1116,4 +1124,3 @@ impression_offsetting <- function(event_data, press_data_categorized){
   # return data frame
   return(combined_df)
 }
-
