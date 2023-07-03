@@ -1016,7 +1016,7 @@ newswire_segmenter_folder <- function(folder_path,
 #' }
 #' @export
 #' @importFrom rlang .data
-#' @import zoo rollapply
+#' @importFrom zoo rollapply
 #'
 # create impression offsetting data frame
 impression_offsetting <- function(event_data, press_data_categorized){
