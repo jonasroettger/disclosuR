@@ -61,7 +61,7 @@ conference_call_segmenter <- function(file,
     date <- stringr::str_match(stringr::str_replace_all(stringr::str_squish(text), "[\r\n]" , ""), paste("Wire", "\\s*(.*?)\\s*", date_end, sep = ""))[[2]]
 
     # convert the string to a date variable
-    date <- as.Date(date, "%B %d, %Y %A")
+    date <- lubridate::mdy(date)
 
     # create year variable
     year <- lubridate::year(date)
